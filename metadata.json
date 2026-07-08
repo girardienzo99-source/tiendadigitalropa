@@ -1,0 +1,6 @@
+{
+  "name": "Tienda Digital de Calzado y Textil",
+  "description": "Catálogo digital e interactivo de zapatillas y productos textiles con stock, lista de precios, banners publicitarios, carrito de compras, simulación de Mercado Pago y envío de pedidos por WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
