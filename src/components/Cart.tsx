@@ -39,6 +39,7 @@ export default function Cart({
   const [deliveryType, setDeliveryType] = useState<'envio' | 'takeaway'>('envio');
   const [paymentMethod, setPaymentMethod] = useState<'mercado_pago' | 'transferencia' | 'efectivo'>('mercado_pago');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [copiedField, setCopiedField] = useState<'alias' | 'cvu' | null>(null);
 
   // Calculation details
   const subtotal = cartItems.reduce((acc, item) => {
@@ -207,12 +208,12 @@ ${itemsText}
 
   if (cartItems.length === 0) {
     return (
-      <div id="cart-empty-view" className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="w-20 h-20 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400 mb-4 shadow-inner">
+      <div id="cart-empty-view" className="flex flex-col items-center justify-center py-16 text-center bg-[#111113] border border-white/5 rounded-3xl p-8">
+        <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/40 mb-4 shadow-inner">
           <ShoppingBag size={36} />
         </div>
-        <h3 className="font-sans font-bold text-lg text-neutral-800 mb-1">Tu carrito está vacío</h3>
-        <p className="text-sm text-neutral-500 max-w-xs mb-6">
+        <h3 className="font-sans font-black text-lg text-white mb-2 uppercase tracking-tight italic">Tu carrito está vacío</h3>
+        <p className="text-xs text-white/50 max-w-xs mb-6 leading-relaxed">
           Explorá nuestro catálogo de calzado y textiles y agregá tus productos favoritos para armar tu pedido.
         </p>
       </div>
@@ -547,6 +548,61 @@ ${itemsText}
                 </span>
               </label>
             </div>
+
+            {/* Transfer Info Box with One-Click Copy */}
+            {paymentMethod === 'transferencia' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 bg-orange-600/5 border border-orange-600/20 rounded-2xl space-y-3 mt-4"
+              >
+                <div className="flex items-center gap-2 text-xs font-bold text-orange-400 uppercase tracking-widest">
+                  <CreditCard size={14} />
+                  <span>Datos de Transferencia Bancaria</span>
+                </div>
+                <p className="text-[10px] text-white/55 leading-relaxed">
+                  Transferí el importe total a nuestra cuenta y envianos el comprobante por WhatsApp para confirmar tu compra.
+                </p>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between bg-black/40 px-3.5 py-2.5 rounded-xl border border-white/5">
+                    <div>
+                      <span className="text-[9px] text-white/30 block font-bold uppercase tracking-wider">Alias de Pago</span>
+                      <span className="font-mono text-xs text-white font-bold">{settings.mercadoPagoAlias}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(settings.mercadoPagoAlias);
+                        setCopiedField('alias');
+                        setTimeout(() => setCopiedField(null), 2000);
+                      }}
+                      className="px-3 py-1.5 bg-white/5 hover:bg-white/10 active:scale-95 text-white rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border border-white/5 cursor-pointer"
+                    >
+                      {copiedField === 'alias' ? '¡Copiado! 📋' : 'Copiar'}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between bg-black/40 px-3.5 py-2.5 rounded-xl border border-white/5">
+                    <div>
+                      <span className="text-[9px] text-white/30 block font-bold uppercase tracking-wider">CVU</span>
+                      <span className="font-mono text-xs text-white font-bold">{settings.mercadoPagoCvu}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(settings.mercadoPagoCvu);
+                        setCopiedField('cvu');
+                        setTimeout(() => setCopiedField(null), 2000);
+                      }}
+                      className="px-3 py-1.5 bg-white/5 hover:bg-white/10 active:scale-95 text-white rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border border-white/5 cursor-pointer"
+                    >
+                      {copiedField === 'cvu' ? '¡Copiado! 📋' : 'Copiar'}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
 
           {/* Pricing summary */}

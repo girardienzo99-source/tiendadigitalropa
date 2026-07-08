@@ -510,7 +510,7 @@ export default function App() {
               }}
               className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer border ${
                 currentRole === 'admin'
-                  ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-500 shadow-md shadow-orange-600/20'
+                  ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-md shadow-orange-600/20'
                   : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10 hover:text-white'
               }`}
             >
@@ -533,14 +533,14 @@ export default function App() {
                 onClick={() => setIsCartOpen(!isCartOpen)}
                 className={`relative p-2.5 rounded-xl border transition-all cursor-pointer ${
                   isCartOpen
-                    ? 'bg-orange-600 border-orange-600 text-white shadow-md shadow-orange-600/20'
+                    ? 'bg-gradient-to-r from-orange-600 to-red-600 border-none text-white shadow-md shadow-orange-600/20'
                     : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:text-white'
                 }`}
                 aria-label="Abrir carrito"
               >
                 <ShoppingBag size={18} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1.5 bg-orange-600 text-white font-extrabold font-mono text-[10px] w-5 h-5 rounded-full flex items-center justify-center animate-bounce shadow-lg border border-black/10">
+                  <span className="absolute -top-1 -right-1.5 bg-red-600 text-white font-extrabold font-mono text-[10px] w-5 h-5 rounded-full flex items-center justify-center animate-bounce shadow-lg border border-black/10">
                     {cartItemsCount}
                   </span>
                 )}
@@ -660,7 +660,7 @@ export default function App() {
                     onClick={() => setSelectedCategory(cat.id)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer border ${
                       selectedCategory === cat.id
-                        ? 'bg-orange-600 text-white border-orange-600 shadow-lg shadow-orange-600/10'
+                        ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-lg shadow-orange-600/15 scale-105'
                         : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:text-white'
                     }`}
                   >

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Star, ShoppingCart, User, Calendar, AlertCircle, Check } from 'lucide-react';
+import { X, Star, ShoppingCart, User, Calendar, AlertCircle, Check, Ruler } from 'lucide-react';
 import { Product, Review } from '../types';
+import SizeGuideModal from './SizeGuideModal';
 
 interface ProductDetailsModalProps {
   product: Product;
@@ -26,6 +27,7 @@ export default function ProductDetailsModal({
   );
   const [cartError, setCartError] = useState('');
   const [cartSuccess, setCartSuccess] = useState(false);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   // Review Form States
   const [formRating, setFormRating] = useState<number>(5);
@@ -227,7 +229,7 @@ export default function ProductDetailsModal({
                             onClick={() => setSelectedColor(color)}
                             className={`px-3 py-1.5 text-[10px] font-bold rounded-lg border transition-all cursor-pointer ${
                               selectedColor === color
-                                ? 'bg-orange-600 text-white border-orange-600 shadow-md'
+                                ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-md shadow-orange-600/15'
                                 : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
                             }`}
                           >
@@ -241,7 +243,22 @@ export default function ProductDetailsModal({
                   {/* Size selector */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-white/40">Talle / Medida:</label>
+                      <label className="text-[10px] uppercase font-black tracking-widest text-white/40 flex items-center gap-1">
+                        Talle / Medida:
+                        <button
+                          type="button"
+                          onClick={() => setIsSizeGuideOpen(true)}
+                          className="text-white/40 hover:text-white transition-colors cursor-pointer text-[9px] font-bold underline flex items-center gap-0.5 ml-2"
+                        >
+                          <Ruler size={10} />
+                          Guía
+                        </button>
+                        {product.stock > 0 && (
+                          <span className="text-[9px] text-emerald-400 font-extrabold ml-2 font-mono">
+                            ({product.stock} disp.)
+                          </span>
+                        )}
+                      </label>
                       {cartError && (
                         <span className="text-[10px] text-orange-500 font-bold flex items-center gap-1 animate-bounce">
                           <AlertCircle size={10} />
@@ -256,7 +273,7 @@ export default function ProductDetailsModal({
                           onClick={() => setSelectedSize(size)}
                           className={`w-10 h-10 flex items-center justify-center text-xs font-bold rounded-xl border transition-all cursor-pointer ${
                             selectedSize === size
-                              ? 'bg-orange-600 text-white border-orange-600 shadow-lg scale-105'
+                              ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-lg shadow-orange-600/15 scale-105'
                               : 'bg-white/5 text-white/70 border-white/10 hover:border-white/30'
                           }`}
                         >
@@ -271,8 +288,8 @@ export default function ProductDetailsModal({
                     onClick={handleAddToCartClick}
                     className={`w-full py-3 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       cartSuccess
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-600/10'
-                        : 'bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/10'
+                        ? 'bg-green-600 text-white shadow-lg shadow-green-600/10 border-none'
+                        : 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-lg shadow-orange-600/20 border-none'
                     }`}
                   >
                     {cartSuccess ? (
@@ -436,6 +453,11 @@ export default function ProductDetailsModal({
           </div>
         </div>
       </motion.div>
+      <SizeGuideModal
+        isOpen={isSizeGuideOpen}
+        onClose={() => setIsSizeGuideOpen(false)}
+        category={product.category}
+      />
     </div>
   );
 }

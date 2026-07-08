@@ -33,49 +33,72 @@ export default function PromoSlider({ banners, onCategorySelect }: PromoSliderPr
   const current = activeBanners[currentIndex];
 
   return (
-    <div id="promo-banner-slider" className="relative w-full h-[280px] md:h-[380px] overflow-hidden rounded-2xl bg-neutral-900 shadow-lg mb-8">
+    <div id="promo-banner-slider" className="relative w-full h-[280px] md:h-[400px] overflow-hidden rounded-3xl bg-[#09090B] border border-white/5 shadow-2xl mb-8">
       <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
           className="absolute inset-0 w-full h-full"
         >
-          {/* Overlay Background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent z-10" />
+          {/* Overlay Background - Rich dark gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent z-10" />
           
-          <img
+          {/* Slow panning Ken burns image effect */}
+          <motion.img
+            key={`img-${current.id}`}
             src={current.image}
             alt={current.title}
-            className="w-full h-full object-cover object-center scale-105"
+            initial={{ scale: 1.05, x: -10 }}
+            animate={{ scale: 1.15, x: 10 }}
+            transition={{ duration: 8, ease: 'easeOut' }}
+            className="absolute inset-0 w-full h-full object-cover object-center"
             referrerPolicy="no-referrer"
           />
 
-          {/* Banner Content */}
-          <div className="absolute inset-y-0 left-0 flex flex-col justify-center items-start px-6 md:px-16 z-20 max-w-xl text-white">
+          {/* Banner Content with staggered animations */}
+          <div className="absolute inset-y-0 left-0 flex flex-col justify-center items-start px-8 md:px-20 z-20 max-w-xl text-white">
             {current.discountText && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-orange-600 text-white uppercase tracking-widest mb-4 shadow-md animate-pulse">
+              <motion.span
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[10px] font-black bg-orange-600 text-white uppercase tracking-widest mb-4 shadow-lg border border-orange-500/20 shadow-orange-600/10"
+              >
                 {current.discountText.includes('ENVÍO') ? <Truck size={12} /> : <Tag size={12} />}
                 {current.discountText}
-              </span>
+              </motion.span>
             )}
             
-            <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-2 uppercase italic drop-shadow-md">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.6 }}
+              className="text-3xl md:text-5xl font-black tracking-tight mb-3 uppercase italic leading-none text-metallic"
+            >
               {current.title}
-            </h2>
+            </motion.h2>
             
-            <p className="text-sm md:text-base text-white/80 mb-6 drop-shadow">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.6 }}
+              className="text-xs md:text-sm text-white/70 mb-7 leading-relaxed font-medium max-w-md"
+            >
               {current.subtitle}
-            </p>
+            </motion.p>
 
-            <button
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.6 }}
               onClick={() => current.linkToCategory && onCategorySelect(current.linkToCategory)}
-              className="px-6 py-3 rounded-lg bg-orange-600 text-white font-black text-xs uppercase tracking-widest hover:bg-orange-500 active:scale-95 transition-all shadow-lg shadow-orange-600/25 cursor-pointer"
+              className="px-6 py-3.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-extrabold text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-lg cursor-pointer"
             >
               Explorar Colección
-            </button>
+            </motion.button>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -85,27 +108,27 @@ export default function PromoSlider({ banners, onCategorySelect }: PromoSliderPr
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white z-30 backdrop-blur-xs active:scale-90 transition-all"
+            className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-black/40 hover:bg-black/85 text-white/70 hover:text-white border border-white/5 hover:border-white/20 z-30 backdrop-blur-md flex items-center justify-center active:scale-90 transition-all cursor-pointer"
             aria-label="Anterior publicidad"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={18} />
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white z-30 backdrop-blur-xs active:scale-90 transition-all"
+            className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-black/40 hover:bg-black/85 text-white/70 hover:text-white border border-white/5 hover:border-white/20 z-30 backdrop-blur-md flex items-center justify-center active:scale-90 transition-all cursor-pointer"
             aria-label="Siguiente publicidad"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={18} />
           </button>
 
           {/* Dots Indicator */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-30">
             {activeBanners.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentIndex ? 'w-6 bg-white' : 'bg-white/40'
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === currentIndex ? 'w-8 bg-white' : 'w-1.5 bg-white/30 hover:bg-white/50'
                 }`}
                 aria-label={`Ir al banner ${idx + 1}`}
               />

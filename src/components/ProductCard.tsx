@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShoppingCart, Heart, RefreshCw, AlertCircle, Sparkles, Star } from 'lucide-react';
+import { ShoppingCart, Heart, RefreshCw, AlertCircle, Sparkles, Star, Ruler } from 'lucide-react';
 import { Product } from '../types';
+import SizeGuideModal from './SizeGuideModal';
 
 interface ProductCardProps {
   key?: string;
@@ -16,6 +17,7 @@ export default function ProductCard({ product, currencySymbol, onAddToCart, onVi
   const [selectedColor, setSelectedColor] = useState<string>(product.colors && product.colors.length > 0 ? product.colors[0] : '');
   const [isLiked, setIsLiked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const hasDiscount = product.promoPrice && product.promoPrice < product.price;
   const activePrice = hasDiscount ? product.promoPrice! : product.price;
@@ -179,7 +181,7 @@ export default function ProductCard({ product, currencySymbol, onAddToCart, onVi
                   onClick={() => setSelectedColor(color)}
                   className={`px-2.5 py-1 text-[10px] font-bold rounded-md border transition-all cursor-pointer ${
                     selectedColor === color
-                      ? 'bg-orange-600 text-white border-orange-600 shadow-md shadow-orange-600/10'
+                      ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-md shadow-orange-600/15'
                       : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
                   }`}
                 >
@@ -193,7 +195,22 @@ export default function ProductCard({ product, currencySymbol, onAddToCart, onVi
         {/* Size Selection Row */}
         <div className="mb-5">
           <div className="flex justify-between items-center mb-1.5">
-            <span className="text-[10px] uppercase font-black tracking-widest text-white/30">Talle/Medida:</span>
+            <span className="text-[10px] uppercase font-black tracking-widest text-white/30 flex items-center gap-1">
+              Talle/Medida:
+              <button
+                type="button"
+                onClick={() => setIsSizeGuideOpen(true)}
+                className="text-white/40 hover:text-white transition-colors cursor-pointer text-[9px] font-bold underline flex items-center gap-0.5 ml-2"
+              >
+                <Ruler size={10} />
+                Guía
+              </button>
+              {product.stock > 0 && (
+                <span className="text-[9px] text-emerald-400 font-extrabold ml-2">
+                  ({product.stock} disp.)
+                </span>
+              )}
+            </span>
             {errorMessage && (
               <span className="text-[10px] text-orange-500 font-bold flex items-center gap-1 animate-bounce">
                 <AlertCircle size={10} />
@@ -210,7 +227,7 @@ export default function ProductCard({ product, currencySymbol, onAddToCart, onVi
                 onClick={() => setSelectedSize(size)}
                 className={`w-9 h-9 flex items-center justify-center text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                   selectedSize === size
-                    ? 'bg-orange-600 text-white border-orange-600 shadow-lg shadow-orange-600/10 scale-105'
+                    ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-none shadow-lg shadow-orange-600/15 scale-105'
                     : 'bg-white/5 text-white/70 border-white/10 hover:border-white/30 active:scale-95'
                 }`}
               >
@@ -227,13 +244,18 @@ export default function ProductCard({ product, currencySymbol, onAddToCart, onVi
           className={`w-full py-3 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer ${
             product.stock === 0
               ? 'bg-white/5 text-white/20 border border-white/5 cursor-not-allowed'
-              : 'bg-orange-600 hover:bg-orange-500 active:scale-98 text-white shadow-lg shadow-orange-600/10'
+              : 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 active:scale-98 text-white shadow-lg shadow-orange-600/20 border-none'
           }`}
         >
           <ShoppingCart size={14} />
           {product.stock === 0 ? 'Agotado' : 'Agregar al Carrito'}
         </button>
       </div>
+      <SizeGuideModal
+        isOpen={isSizeGuideOpen}
+        onClose={() => setIsSizeGuideOpen(false)}
+        category={product.category}
+      />
     </motion.div>
   );
 }
