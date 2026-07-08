@@ -162,9 +162,15 @@ async function start() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[FULL-STACK SERVER] Running on http://localhost:${PORT} in ${process.env.NODE_ENV || "development"} mode`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`[FULL-STACK SERVER] Running on http://localhost:${PORT} in ${process.env.NODE_ENV || "development"} mode`);
+    });
+  }
 }
 
-start();
+if (!process.env.VERCEL) {
+  start();
+}
+
+export default app;
