@@ -467,15 +467,13 @@ export default function App() {
           
           {/* Logo Brand Title */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setSelectedCategory('all'); setCurrentRole('customer'); }}>
-            <div className="w-8 h-8 bg-white flex items-center justify-center rounded-sm shrink-0 shadow-md">
-              <div className="w-4 h-4 bg-black rotate-45"></div>
-            </div>
+            <img src="/logo.jpg" alt="BLESSED Logo" className="w-12 h-12 object-contain rounded-md border border-white/10 shadow-lg" />
             <div>
               <span className="font-sans font-black text-xl text-white tracking-tighter uppercase italic block leading-none">
                 {settings.storeName.toUpperCase()}
               </span>
-              <span className="text-[10px] font-bold text-orange-500 tracking-widest block uppercase mt-0.5">
-                CALZADO & TEXTIL
+              <span className="text-[9px] font-bold text-white/50 tracking-widest block uppercase mt-0.5">
+                PREMIUM SNEAKERS
               </span>
             </div>
           </div>

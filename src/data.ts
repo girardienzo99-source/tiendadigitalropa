@@ -255,7 +255,7 @@ export const INITIAL_BANNERS: PromoBanner[] = [
 ];
 
 export const INITIAL_SETTINGS: StoreSettings = {
-  storeName: 'Zapas & Co. Urban Store',
+  storeName: 'BLESSED',
   whatsappNumber: '5491133445566', // Number in international format for testing
   currencySymbol: '$',
   mercadoPagoAlias: 'tienda.urbana.mp',
